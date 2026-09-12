@@ -1,0 +1,773 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LostLink | Lost & Found</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header>
+
+        <div class="logo">
+            Lost<span>Link</span>
+        </div>
+
+        <p>Real-Time Lost & Found Management</p>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- =========================
+             HERO
+        ========================== -->
+
+        <section class="hero">
+
+            <h1>
+                Lost something? Found something?
+            </h1>
+
+            <p>
+                Report it, search for it and help return it to its owner.
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             STATISTICS
+        ========================== -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🔴
+                </div>
+
+                <div>
+
+                    <p>Lost Items</p>
+
+                    <h2>
+                        {{ total_lost }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🟢
+                </div>
+
+                <div>
+
+                    <p>Found Items</p>
+
+                    <h2>
+                        {{ total_found }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✅
+                </div>
+
+                <div>
+
+                    <p>Returned Items</p>
+
+                    <h2>
+                        {{ total_returned }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             REPORT ITEM
+        ========================== -->
+
+        <section class="form-card">
+
+            <h2>
+                Report an Item
+            </h2>
+
+
+            <form
+                action="{{ url_for('add_item') }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <div class="form-grid">
+
+
+                    <!-- ITEM NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Item Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="item_name"
+                            placeholder="Example: Black Wallet"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Category
+                        </label>
+
+                        <select
+                            name="category"
+                            required
+                        >
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="Electronics">
+                                Electronics
+                            </option>
+
+                            <option value="Documents">
+                                Documents
+                            </option>
+
+                            <option value="Wallet">
+                                Wallet
+                            </option>
+
+                            <option value="Bag">
+                                Bag
+                            </option>
+
+                            <option value="Keys">
+                                Keys
+                            </option>
+
+                            <option value="Jewellery">
+                                Jewellery
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- REPORT TYPE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Report Type
+                        </label>
+
+                        <select
+                            name="report_type"
+                            required
+                        >
+
+                            <option value="">
+                                Select type
+                            </option>
+
+                            <option value="Lost">
+                                I Lost This
+                            </option>
+
+                            <option value="Found">
+                                I Found This
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- LOCATION -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            name="location"
+                            placeholder="Example: College Library"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- DATE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="date_reported"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- CONTACT -->
+
+                    <div class="form-group">
+
+                        <label>
+                            📞 Contact Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            name="contact"
+                            placeholder="Example: 9876543210"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                            required
+                        >
+
+                        <small>
+                            Enter a 10-digit mobile number.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- PHOTO -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Item Photo
+                        </label>
+
+                        <input
+                            type="file"
+                            name="image"
+                            accept=".jpg,.jpeg,.png,.webp"
+                        >
+
+                        <small>
+                            Upload a clear photo of the item.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        placeholder="Describe the item..."
+                        rows="4"
+                    ></textarea>
+
+                </div>
+
+
+
+                <button type="submit">
+                    + Report Item
+                </button>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =========================
+             SEARCH
+        ========================== -->
+
+        <section class="search-card">
+
+            <h2>
+                🔎 Find an Item
+            </h2>
+
+
+            <form
+                action="{{ url_for('home') }}"
+                method="GET"
+            >
+
+                <div class="search-grid">
+
+
+                    <!-- SEARCH -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Search
+                        </label>
+
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ search }}"
+                            placeholder="Search item, location or description..."
+                        >
+
+                    </div>
+
+
+
+                    <!-- REPORT TYPE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Report Type
+                        </label>
+
+                        <select name="report_type">
+
+                            <option value="">
+                                All
+                            </option>
+
+                            <option
+                                value="Lost"
+                                {% if report_type == "Lost" %}
+                                selected
+                                {% endif %}
+                            >
+                                Lost
+                            </option>
+
+                            <option
+                                value="Found"
+                                {% if report_type == "Found" %}
+                                selected
+                                {% endif %}
+                            >
+                                Found
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- STATUS -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select name="status">
+
+                            <option value="">
+                                All
+                            </option>
+
+                            <option
+                                value="Active"
+                                {% if status == "Active" %}
+                                selected
+                                {% endif %}
+                            >
+                                Active
+                            </option>
+
+                            <option
+                                value="Returned"
+                                {% if status == "Returned" %}
+                                selected
+                                {% endif %}
+                            >
+                                Returned
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="search-buttons">
+
+                    <button type="submit">
+                        🔎 Search
+                    </button>
+
+                    <a
+                        href="{{ url_for('home') }}"
+                        class="clear-btn"
+                    >
+                        Clear
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =========================
+             RECENT REPORTS
+        ========================== -->
+
+        <section class="items-section">
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Recent Reports
+                    </h2>
+
+                    <p>
+                        Latest lost and found items
+                    </p>
+
+                </div>
+
+
+                <div class="total">
+
+                    {{ items|length }} Reports
+
+                </div>
+
+            </div>
+
+
+
+            <div class="items-grid">
+
+
+                {% if items %}
+
+
+                    {% for item in items %}
+
+
+                    <!-- =========================
+                         ITEM CARD
+                    ========================== -->
+
+                    <div class="item-card">
+
+
+                        <!-- IMAGE -->
+
+                        {% if item.image %}
+
+                        <div class="item-image">
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='uploads/' + item.image
+                                ) }}"
+                                alt="{{ item.item_name }}"
+                            >
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="no-image">
+                            📦
+                        </div>
+
+                        {% endif %}
+
+
+
+                        <!-- ITEM STATUS -->
+
+                        <div class="item-top">
+
+
+                            {% if item.report_type == "Lost" %}
+
+                            <span class="badge lost">
+                                LOST
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge found">
+                                FOUND
+                            </span>
+
+                            {% endif %}
+
+
+
+                            {% if item.status == "Returned" %}
+
+                            <span class="status returned">
+                                ✓ Returned
+                            </span>
+
+                            {% else %}
+
+                            <span class="status active">
+                                Active
+                            </span>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+
+                        <!-- ITEM NAME -->
+
+                        <h3>
+                            {{ item.item_name }}
+                        </h3>
+
+
+
+                        <!-- DESCRIPTION -->
+
+                        <p class="description">
+
+                            {{ item.description or
+                            "No description provided." }}
+
+                        </p>
+
+
+
+                        <!-- =========================
+                             ITEM DETAILS
+                        ========================== -->
+
+                        <div class="details">
+
+                            <div>
+                                📂 {{ item.category }}
+                            </div>
+
+                            <div>
+                                📍 {{ item.location }}
+                            </div>
+
+                            <div>
+                                📅 {{ item.date_reported }}
+                            </div>
+
+
+                            <!-- CONTACT -->
+
+                            {% if item.contact %}
+
+                            <div class="contact-info">
+
+                                <span class="contact-icon">
+                                    📞
+                                </span>
+
+                                <a
+                                    href="tel:{{ item.contact }}"
+                                    class="contact-link"
+                                >
+                                    {{ item.contact }}
+                                </a>
+
+                            </div>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+
+                        <!-- =========================
+                             ACTION BUTTONS
+                        ========================== -->
+
+                        {% if item.status != "Returned" %}
+
+
+                            <!-- FIND MATCHES -->
+
+                            {% if item.report_type == "Lost" %}
+
+                            <a
+                                href="{{ url_for(
+                                    'find_matches',
+                                    item_id=item.id
+                                ) }}"
+                                class="match-btn"
+                            >
+                                🔗 Find Matches
+                            </a>
+
+                            {% endif %}
+
+
+
+                            <!-- MARK RETURNED -->
+
+                            <a
+                                href="{{ url_for(
+                                    'mark_returned',
+                                    item_id=item.id
+                                ) }}"
+                                class="return-btn"
+                            >
+                                ✓ Mark as Returned
+                            </a>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    <!-- EMPTY -->
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            🔎
+                        </div>
+
+                        <h3>
+                            No matching reports
+                        </h3>
+
+                        <p>
+                            Try changing your search or filter.
+                        </p>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <p>
+            LostLink © 2026 ·
+            Connecting lost items with their owners
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
+```

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LostLink | Potential Matches</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+            Lost<span>Link</span>
+        </div>
+
+        <p>Potential Item Matches</p>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <h1>
+                🔗 Potential Matches
+            </h1>
+
+            <p>
+                Found items that may belong to the lost item.
+            </p>
+
+        </section>
+
+
+
+        <!-- LOST ITEM -->
+
+        <section class="form-card">
+
+            <h2>
+                Lost Item
+            </h2>
+
+
+            <div class="match-original">
+
+
+                {% if item.image %}
+
+                <div class="match-image">
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='uploads/' + item.image
+                        ) }}"
+                        alt="{{ item.item_name }}"
+                    >
+
+                </div>
+
+                {% endif %}
+
+
+                <div>
+
+                    <h3>
+                        {{ item.item_name }}
+                    </h3>
+
+                    <p>
+                        📂 {{ item.category }}
+                    </p>
+
+                    <p>
+                        📍 {{ item.location }}
+                    </p>
+
+                    <p>
+                        📅 {{ item.date_reported }}
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- MATCHES -->
+
+        <section class="items-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Found Items
+                    </h2>
+
+                    <p>
+                        Same category items currently reported as found
+                    </p>
+
+                </div>
+
+
+                <div class="total">
+
+                    {{ matches|length }} Matches
+
+                </div>
+
+            </div>
+
+
+
+            <div class="items-grid">
+
+
+                {% if matches %}
+
+
+                    {% for match in matches %}
+
+
+                    <div class="item-card">
+
+
+                        {% if match.image %}
+
+                        <div class="item-image">
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='uploads/' + match.image
+                                ) }}"
+                                alt="{{ match.item_name }}"
+                            >
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="no-image">
+                            📦
+                        </div>
+
+                        {% endif %}
+
+
+
+                        <div class="item-top">
+
+                            <span class="badge found">
+                                FOUND
+                            </span>
+
+                            <span class="status active">
+                                Active
+                            </span>
+
+                        </div>
+
+
+
+                        <h3>
+                            {{ match.item_name }}
+                        </h3>
+
+
+
+                        <p class="description">
+
+                            {{ match.description or
+                            "No description provided." }}
+
+                        </p>
+
+
+
+                        <div class="details">
+
+                            <div>
+                                📂 {{ match.category }}
+                            </div>
+
+                            <div>
+                                📍 {{ match.location }}
+                            </div>
+
+                            <div>
+                                📅 {{ match.date_reported }}
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{{ url_for(
+                                'mark_returned',
+                                item_id=match.id
+                            ) }}"
+                            class="return-btn"
+                        >
+                            Mark as Returned
+                        </a>
+
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            🔍
+                        </div>
+
+                        <h3>
+                            No potential matches found
+                        </h3>
+
+                        <p>
+                            No active found item with the same category
+                            is currently available.
+                        </p>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- BACK BUTTON -->
+
+        <div class="back-container">
+
+            <a
+                href="/"
+                class="back-btn"
+            >
+                ← Back to LostLink
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            LostLink © 2026 ·
+            Connecting lost items with their owners
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
